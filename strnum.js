@@ -1,7 +1,9 @@
-const hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 const numRegex = /^([\-\+])?(0*)(\.[0-9]+([eE]\-?[0-9]+)?|[0-9]+(\.[0-9]+([eE]\-?[0-9]+)?)?)$/;
-// const octRegex = /0x[a-z0-9]+/;
-// const binRegex = /0x[a-z0-9]+/;
+const intRegex = /^[-+]?[0-9]+$/g;
+const fltRegex = /^[-+]?[0-9]*\.[0-9]+([eE][-+]?[0-9]+)?$/g;
+const octRegex = /o[0-7]+/g;
+const binRegex = /b[0-1]+/g;
+const hexRegex = /^[-+]?0x[0-9A-Fa-f]+$/g;
 
 
 //polyfill
