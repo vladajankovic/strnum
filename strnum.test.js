@@ -40,30 +40,40 @@ describe("Should convert all the valid numeric strings to number", () => {
         expect(toNumber("6")).toEqual(6);
         expect(toNumber("+06")).toEqual(6);
         expect(toNumber("-06")).toEqual(-6);
-        expect(toNumber("-06", { removeLeadingZeros :  true})).toEqual(-6);
-        expect(toNumber("-06", { removeLeadingZeros :  false})).toEqual("-06");
+        expect(toNumber("-06", { removeLeadingZeros: true })).toEqual(-6);
+        expect(toNumber("-06", { removeLeadingZeros: false })).toEqual("-06");
         expect(toNumber("06")).toEqual(6);
-        expect(toNumber("06", { removeLeadingZeros :  true})).toEqual(6);
-        expect(toNumber("06", { removeLeadingZeros :  false})).toEqual("06");
+        expect(toNumber("06", { removeLeadingZeros: true })).toEqual(6);
+        expect(toNumber("06", { removeLeadingZeros: false })).toEqual("06");
         
         expect(toNumber("006")).toEqual(6);
-        expect(toNumber("006", { removeLeadingZeros :  true})).toEqual(6);
-        expect(toNumber("006", { removeLeadingZeros :  false})).toEqual("006");
+        expect(toNumber("006", { removeLeadingZeros: true })).toEqual(6);
+        expect(toNumber("006", { removeLeadingZeros: false })).toEqual("006");
 
-        expect(toNumber("6", { removePositiveSign :  true})).toEqual(6);
-        expect(toNumber("+6", { removePositiveSign :  true})).toEqual(6);
-        expect(toNumber("+6", { removePositiveSign :  false})).toEqual("+6");
-        expect(toNumber("-6", { removePositiveSign :  true})).toEqual(-6);
+        expect(toNumber("6", { removePositiveSign: true })).toEqual(6);
+        expect(toNumber("+6", { removePositiveSign: true })).toEqual(6);
+        expect(toNumber("+6", { removePositiveSign: false })).toEqual("+6");
+        expect(toNumber("-6", { removePositiveSign: true })).toEqual(-6);
 
-        expect(toNumber("+06", { removeLeadingZeros :  true, removePositiveSign : true})).toEqual(6);
-        expect(toNumber("+06", { removeLeadingZeros :  true, removePositiveSign : false})).toEqual("+6");
-        expect(toNumber("+06", { removeLeadingZeros :  false, removePositiveSign : true})).toEqual("06");
-        expect(toNumber("+06", { removeLeadingZeros :  false, removePositiveSign : false})).toEqual("+06");
+        expect(toNumber("+06", { removeLeadingZeros: true, removePositiveSign: true })).toEqual(6);
+        expect(toNumber("+06", { removeLeadingZeros: true, removePositiveSign: false })).toEqual("+6");
+        expect(toNumber("+06", { removeLeadingZeros: false, removePositiveSign: true })).toEqual("06");
+        expect(toNumber("+06", { removeLeadingZeros: false, removePositiveSign: false })).toEqual("+06");
 
-        expect(toNumber("000000000000000000000000017717"  ,  { removeLeadingZeros :  false})).toEqual("000000000000000000000000017717");
-        expect(toNumber("000000000000000000000000017717"  ,  { removeLeadingZeros :  true})).toEqual(17717);
+        expect(toNumber("000000000000000000000000017717", { removeLeadingZeros: false })).toEqual("000000000000000000000000017717");
+        expect(toNumber("000000000000000000000000017717", { removeLeadingZeros: true })).toEqual(17717);
 
         expect(toNumber("   +1212   ")).toEqual(1212);
+        expect(toNumber("+1212121212") ).toEqual(1212121212);
+
+        expect(toNumber("420926189200190257681175017717")).toEqual(4.209261892001902e+29);
+        expect(toNumber("0420926189200190257681175017717")).toEqual(4.209261892001902e+29);
+        expect(toNumber("420926189200190257681175017717", { eNotation: false })).toEqual("420926189200190257681175017717");
+
+        expect(toNumber("020211201030005811824")).toEqual("20211201030005811824");
+        expect(toNumber("020211201030005811824", { removeLeadingZeros: false })).toEqual("020211201030005811824");
+        expect(toNumber("+020211201030005811824")).toEqual("20211201030005811824");
+        expect(toNumber("+20211201030005811824", { removePositiveSign: false })).toEqual("+20211201030005811824");
     })
     it("should parse hexadecimal values", () => {
         expect(toNumber("0x2f")).toEqual(47);
@@ -72,13 +82,6 @@ describe("Should convert all the valid numeric strings to number", () => {
         expect(toNumber("-0x2f", { parseHex :  true})).toEqual(-47);
         expect(toNumber("0x2f", { parseHex :  false})).toEqual("0x2f");
         expect(toNumber("-0x2f", { parseHex :  false})).toEqual("-0x2f");
-    })
-    it("leading zeros", () => {
-
-
-        
-        //expect(toNumber("020211201030005811824")  ).toEqual("020211201030005811824");
-        //expect(toNumber("0420926189200190257681175017717")  ).toEqual(4.209261892001902e+29);
     })
     // it("invalid floating number", () => {
     //     expect(toNumber("20.21.030")  ).toEqual("20.21.030");
@@ -124,8 +127,7 @@ describe("Should convert all the valid numeric strings to number", () => {
         // expect(toNumber("-06.0"  ,  { removeLeadingZeros :  false})).toEqual("-06.0");
     })
     // it("long number", () => {
-    //     expect(toNumber("020211201030005811824")  ).toEqual("020211201030005811824");
-    //     expect(toNumber("20211201030005811824")  ).toEqual("20211201030005811824");
+        
     //     expect(toNumber("20.211201030005811824")  ).toEqual("20.211201030005811824");
     //     expect(toNumber("0.211201030005811824")  ).toEqual("0.211201030005811824");
     // });
@@ -139,9 +141,7 @@ describe("Should convert all the valid numeric strings to number", () => {
     //     expect(toNumber("-1.0e2") ).toEqual(-100);
     //     expect(toNumber("1.0e-2")).toEqual(0.01);
 
-    //     expect(toNumber("420926189200190257681175017717")  ).toEqual(4.209261892001902e+29);
-    //     expect(toNumber("420926189200190257681175017717" , { eNotation: false} )).toEqual("420926189200190257681175017717");
-
+        
     // });
 
     // it("scientific notation with upper E", () => {
@@ -159,7 +159,6 @@ describe("Should convert all the valid numeric strings to number", () => {
         expect(toNumber("+12", { skipLike: /\+[0-9]{10}/} )).toEqual(12);
         expect(toNumber("12+12", { skipLike: /\+[0-9]{10}/} )).toEqual("12+12");
         expect(toNumber("12+1212121212", { skipLike: /\+[0-9]{10}/} )).toEqual("12+1212121212");
-        expect(toNumber("+1212121212") ).toEqual(1212121212);
         expect(toNumber("+1212121212", { skipLike: /\+[0-9]{10}/} )).toEqual("+1212121212");
     })
     

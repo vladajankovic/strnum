@@ -34,7 +34,7 @@ const defaultOptions = {
 };
 
 function toNumber(str, options = {}){
-    options = Object.assign({}, defaultOptions, options );
+    options = Object.assign({}, defaultOptions, options);
 
     if(!isString(str)) {
         return str;
@@ -73,8 +73,15 @@ function toNumber(str, options = {}){
         }
 
         let int_num = Number.parseInt(num);
+        let str_int_num = int_num.toString();
 
-        if (num != int_num.toString()) return num;
+        // for large numbers, perseInt can return e-notation
+        if (str_int_num.search(/[eE]/) != -1) {
+            if (options.eNotation) return int_num;
+            return num;
+        }
+
+        if (num != str_int_num) return num;
         return int_num;      
     }
     
